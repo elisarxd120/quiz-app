@@ -25,7 +25,7 @@ export default function RoleSelection() {
             onClick={() => handleRoleClick("student")}
             className="w-56 h-40 bg-teal-50 border rounded-xl shadow-sm flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition"
           >
-            <img src="/public/student.png" alt="Student" className="w-16 h-16 mb-3" />
+            <img src="/student.png" alt="Student" className="w-16 h-16 mb-3" />
             <p className="text-gray-700 font-medium">Student</p>
           </div>
 
@@ -34,7 +34,7 @@ export default function RoleSelection() {
             onClick={() => handleRoleClick("instructor")}
             className="w-56 h-40 bg-teal-50 border rounded-xl shadow-sm flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition"
           >
-            <img src="/public/instructor.png" alt="Instructor" className="w-16 h-16 mb-3" />
+            <img src="/instructor.png" alt="Instructor" className="w-16 h-16 mb-3" />
             <p className="text-gray-700 font-medium">Instructor</p>
           </div>
         </div>
@@ -43,13 +43,13 @@ export default function RoleSelection() {
       {/* Illustration */}
       <div className="w-full bg-gray-100 h-[510px] relative overflow-hidden">
         <div className="absolute right-0 bottom-0">
-          <img src="/public/ellipse_right.png" alt="ellipse" />
+          <img src="/ellipse_right.png" alt="ellipse" />
         </div>
         <div className="absolute left-0 bottom-0">
-          <img src="/public/ellipse_left.png" alt="ellipse" />
+          <img src="/ellipse_left.png" alt="ellipse" />
         </div>
         <img
-          src="/public/illustration.svg"
+          src="/illustration.svg"
           alt="Illustration"
           className="relative w-full h-full object-contain z-10"
         />

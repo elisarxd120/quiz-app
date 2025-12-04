@@ -53,7 +53,7 @@ export default function SignUpPage() {
   return (
     <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center relative overflow-hidden p-6">
       <div className="absolute left-0 bottom-0">
-        <img src="/public/ellipse_login.png" alt="ellipse" />
+        <img src="/ellipse_login.png" alt="ellipse" />
       </div>
 
       <Card className="w-full max-w-200 h-[700px] z-10 border-gray-300 rounded-xl shadow-md absolute right-10">
