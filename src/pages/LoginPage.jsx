@@ -11,33 +11,35 @@ export default function LoginPage() {
   const role = location.state?.role;
 
   useEffect(() => {
-    if (!role) navigate("/role-selection");
+    if (!role) navigate("/");
   }, [role, navigate]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("quizAppUsers")) || [];
+  const users = JSON.parse(localStorage.getItem("quizAppUsers")) || [];
 
-    // Find user with email, password, and role
-    const user = users.find(
-      (u) => u.email === email && u.password === password && u.role === role
-    );
+  const user = users.find(
+    (u) => u.email === email && u.password === password && u.role === role
+  );
 
-    if (!user) {
-      alert("Invalid credentials for this role!");
-      return;
-    }
+  if (!user) {
+    alert("Invalid credentials for this role!");
+    return;
+  }
 
-    alert(`Welcome back, ${user.name}!`);
-    localStorage.setItem("quizAppLoggedIn", "true");
-    localStorage.setItem("quizAppRole", role);
+  alert(`Welcome back, ${user.name}!`);
+  localStorage.setItem("quizAppLoggedIn", "true");
+  localStorage.setItem("quizAppRole", role);
 
-    // Navigate based on role
-    if (role === "instructor") navigate("/instructor-dashboard");
-    else navigate("/student-dashboard");
-  };
+  // FIX: Pass the user via navigate()
+  if (role === "instructor") {
+    navigate("/instructor-dashboard", { state: { user } });
+  } else {
+    navigate("/student_dashboard", { state: { user } });
+  }
+};
 
   if (!role) return null; // render nothing until redirect
 
