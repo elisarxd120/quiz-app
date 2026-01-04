@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { CheckCircle, XCircle, Send, AlertCircle, Filter } from 'lucide-react';
+=======
+import { CheckCircle, XCircle, Send, AlertCircle } from 'lucide-react';
+>>>>>>> 8002401 (WIP: local changes)
 
 const Instructor = () => {
   const location = useLocation();
@@ -10,6 +14,7 @@ const Instructor = () => {
     location.state?.user ||
     JSON.parse(localStorage.getItem("quizAppUser")) || null;
 
+<<<<<<< HEAD
   // State for quiz information
   const [selectedQuiz, setSelectedQuiz] = useState('all');
   const [availableQuizzes, setAvailableQuizzes] = useState([]);
@@ -17,6 +22,10 @@ const Instructor = () => {
   // State for submissions
   const [allSubmissions, setAllSubmissions] = useState([]);
   const [filteredSubmissions, setFilteredSubmissions] = useState([]);
+=======
+  // State for submissions
+  const [allSubmissions, setAllSubmissions] = useState([]);
+>>>>>>> 8002401 (WIP: local changes)
 
   // State for notification
   const [notification, setNotification] = useState({
@@ -29,6 +38,13 @@ const Instructor = () => {
   const [isReleasing, setIsReleasing] = useState(false);
   const [releasingId, setReleasingId] = useState(null);
 
+<<<<<<< HEAD
+=======
+  // State for success view
+  const [resultsReleased, setResultsReleased] = useState(false);
+  const [releasedCount, setReleasedCount] = useState(0);
+
+>>>>>>> 8002401 (WIP: local changes)
   // Check authentication
   useEffect(() => {
     if (!user || user.role !== 'instructor') {
@@ -41,21 +57,29 @@ const Instructor = () => {
     loadAllQuizSubmissions();
   }, []);
 
+<<<<<<< HEAD
   // Filter submissions when quiz selection changes
   useEffect(() => {
     filterSubmissions();
   }, [selectedQuiz, allSubmissions]);
 
+=======
+>>>>>>> 8002401 (WIP: local changes)
   // Load all quiz submissions
   const loadAllQuizSubmissions = () => {
     const activities = JSON.parse(localStorage.getItem("quizActivities")) || [];
 
+<<<<<<< HEAD
     // Get unique quiz titles (subjects)
     const uniqueQuizzes = [...new Set(activities.map(activity => activity.quizTitle))];
     setAvailableQuizzes(uniqueQuizzes);
 
     // Map all activities to submission format
     const mappedSubmissions = activities.map(activity => ({
+=======
+    // Map all activities to submission format with index for sorting
+    const mappedSubmissions = activities.map((activity, index) => ({
+>>>>>>> 8002401 (WIP: local changes)
       id: activity.id || `${activity.studentEmail}_${activity.quizTitle}_${Date.now()}`,
       name: activity.studentName || activity.studentEmail.split('@')[0],
       email: activity.studentEmail,
@@ -65,6 +89,7 @@ const Instructor = () => {
       violations: activity.tabSwitchViolations || (activity.autoSubmitted && activity.submitReason === 'tab-switch' ? 3 : 0),
       timestamp: activity.date,
       released: activity.scoreReleased || false,
+<<<<<<< HEAD
       autoSubmitted: activity.autoSubmitted || false
     }));
 
@@ -78,6 +103,16 @@ const Instructor = () => {
     } else {
       setFilteredSubmissions(allSubmissions.filter(s => s.quizTitle === selectedQuiz));
     }
+=======
+      autoSubmitted: activity.autoSubmitted || false,
+      submissionIndex: index
+    }));
+
+    // Sort by submission index in REVERSE (newest first, oldest last)
+    const sortedSubmissions = mappedSubmissions.sort((a, b) => b.submissionIndex - a.submissionIndex);
+
+    setAllSubmissions(sortedSubmissions);
+>>>>>>> 8002401 (WIP: local changes)
   };
 
   // Show notification
@@ -125,7 +160,13 @@ const Instructor = () => {
         )
       );
 
+<<<<<<< HEAD
       showNotification(`Result released to ${submission.name} for ${submission.quizTitle}`, 'success');
+=======
+      // Show success view
+      setReleasedCount(1);
+      setResultsReleased(true);
+>>>>>>> 8002401 (WIP: local changes)
     } catch (error) {
       console.error('Error releasing individual result:', error);
       showNotification('Failed to release result', 'error');
@@ -134,12 +175,21 @@ const Instructor = () => {
     }
   };
 
+<<<<<<< HEAD
   // Release all filtered results
   const releaseAllResults = () => {
     const unreleasedSubmissions = filteredSubmissions.filter(s => !s.released);
 
     if (unreleasedSubmissions.length === 0) {
       showNotification('All visible results have already been released', 'info');
+=======
+  // Release all results
+  const releaseAllResults = () => {
+    const unreleasedSubmissions = allSubmissions.filter(s => !s.released);
+
+    if (unreleasedSubmissions.length === 0) {
+      showNotification('All results have already been released', 'info');
+>>>>>>> 8002401 (WIP: local changes)
       return;
     }
 
@@ -173,11 +223,17 @@ const Instructor = () => {
         })
       );
 
+<<<<<<< HEAD
       const quizText = selectedQuiz === 'all' ? 'all quizzes' : selectedQuiz;
       showNotification(
         `Successfully released ${unreleasedSubmissions.length} result${unreleasedSubmissions.length > 1 ? 's' : ''} for ${quizText}`,
         'success'
       );
+=======
+      // Show success view
+      setReleasedCount(unreleasedSubmissions.length);
+      setResultsReleased(true);
+>>>>>>> 8002401 (WIP: local changes)
     } catch (error) {
       console.error('Error releasing all results:', error);
       showNotification('Failed to release all results', 'error');
@@ -186,6 +242,15 @@ const Instructor = () => {
     }
   };
 
+<<<<<<< HEAD
+=======
+  // Handle back to dashboard
+  const handleBackToDashboard = () => {
+    setResultsReleased(false);
+    loadAllQuizSubmissions(); // Reload data
+  };
+
+>>>>>>> 8002401 (WIP: local changes)
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("quizAppUser");
@@ -195,10 +260,66 @@ const Instructor = () => {
   };
 
   // Get count of unreleased results
+<<<<<<< HEAD
   const unreleasedCount = filteredSubmissions.filter(s => !s.released).length;
   const allReleased = unreleasedCount === 0;
   const totalUnreleased = allSubmissions.filter(s => !s.released).length;
 
+=======
+  const unreleasedCount = allSubmissions.filter(s => !s.released).length;
+  const allReleased = unreleasedCount === 0;
+  const totalUnreleased = allSubmissions.filter(s => !s.released).length;
+
+  // Success View
+  if (resultsReleased) {
+    return (
+      <div
+        className="min-h-screen flex items-center justify-center p-8"
+        style={{
+          backgroundImage: "url('/results_bg.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <div className="text-center max-w-2xl">
+          {/* Check Icon with Glow */}
+          <div className="relative inline-flex items-center justify-center mb-8">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-40 h-40 bg-[#b8e6ea] rounded-full blur-3xl opacity-60"></div>
+            </div>
+            <div className="relative w-32 h-32 rounded-full flex items-center justify-center border-4 border-black bg-white">
+              <img src="/checkicon.svg" alt="Success" className="w-16 h-16" />
+            </div>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            Results Successfully Released
+          </h2>
+
+          {/* Message */}
+          <p className="text-lg text-gray-700 mb-12 max-w-xl mx-auto">
+            {releasedCount === 1
+              ? "The student can now view their quiz score on their dashboard."
+              : `${releasedCount} results released. Students can now view their quiz scores on their dashboards.`
+            }
+          </p>
+
+          {/* Button */}
+          <button
+            onClick={handleBackToDashboard}
+            className="bg-[#a8dfe3] hover:bg-[#96d5d9] text-gray-900 font-semibold px-12 py-4 rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Main Dashboard View
+>>>>>>> 8002401 (WIP: local changes)
   return (
     <div className="min-h-screen bg-linear-to-br from-[#d4f1f4] via-[#c8e9ec] to-[#b8dfe3]">
       {/* Notification */}
@@ -237,13 +358,21 @@ const Instructor = () => {
           <div className="flex items-center space-x-12">
             <button
               onClick={() => navigate('/Instructor', { state: { user } })}
+<<<<<<< HEAD
               className="text-gray-600 hover:text-[#1a3a5f] transition-colors text-base font-medium"
+=======
+              className="text-gray-600 hover:text-[#1a3a5f] transition-colors font-thin text-xl"
+>>>>>>> 8002401 (WIP: local changes)
             >
               Dashboard
             </button>
             <button
               onClick={() => navigate('/Profile', { state: { user } })}
+<<<<<<< HEAD
               className="text-gray-600 hover:text-[#1a3a5f] transition-colors text-base font-medium"
+=======
+              className="text-gray-600 hover:text-[#1a3a5f] transition-colors font-thin text-xl"
+>>>>>>> 8002401 (WIP: local changes)
             >
               Profile
             </button>
@@ -282,21 +411,35 @@ const Instructor = () => {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
         {/* Results Table */}
         {filteredSubmissions.length === 0 ? (
+=======
+
+        {/* Results Table */}
+        {allSubmissions.length === 0 ? (
+>>>>>>> 8002401 (WIP: local changes)
           <div className="bg-white rounded-2xl shadow-lg p-12">
             <div className="text-center">
               <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
+<<<<<<< HEAD
               <p className="text-gray-500 text-lg">
                 {selectedQuiz === 'all' ? 'No submissions yet' : `No submissions for ${selectedQuiz}`}
               </p>
+=======
+              <p className="text-gray-500 text-lg">No submissions yet</p>
+>>>>>>> 8002401 (WIP: local changes)
               <p className="text-gray-400 text-sm mt-2">Student submissions will appear here once they complete quizzes</p>
             </div>
           </div>
         ) : (
+<<<<<<< HEAD
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+=======
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden text-center">
+>>>>>>> 8002401 (WIP: local changes)
             {/* Table Header */}
             <div className="bg-gray-50 border-b border-gray-200">
               <div className="grid grid-cols-7 gap-4 px-8 py-5">
@@ -312,7 +455,11 @@ const Instructor = () => {
 
             {/* Table Body */}
             <div className="divide-y divide-gray-200">
+<<<<<<< HEAD
               {filteredSubmissions.map((submission) => (
+=======
+              {allSubmissions.map((submission) => (
+>>>>>>> 8002401 (WIP: local changes)
                 <div
                   key={submission.id}
                   className={`grid grid-cols-7 gap-4 px-8 py-6 hover:bg-gray-50 transition-colors ${
@@ -321,9 +468,12 @@ const Instructor = () => {
                 >
                   <div className="text-gray-800 text-base flex items-center">
                     {submission.name}
+<<<<<<< HEAD
                     {submission.released && (
                       <CheckCircle className="w-4 h-4 text-green-600 ml-2" />
                     )}
+=======
+>>>>>>> 8002401 (WIP: local changes)
                   </div>
                   <div className="text-gray-800 text-base font-medium">
                     {submission.quizTitle}
@@ -387,17 +537,29 @@ const Instructor = () => {
                 {allReleased ? (
                   <span className="text-green-600 font-medium flex items-center gap-2">
                     <CheckCircle className="w-5 h-5" />
+<<<<<<< HEAD
                     All visible results have been released to students
                   </span>
                 ) : (
                   <span>
                     Click "Release Results" to release all visible pending results at once
+=======
+                    All results have been released to students
+                  </span>
+                ) : (
+                  <span>
+                    Click "Release Results" to release all pending results at once
+>>>>>>> 8002401 (WIP: local changes)
                   </span>
                 )}
               </div>
               <button
                 onClick={releaseAllResults}
+<<<<<<< HEAD
                 disabled={isReleasing || allReleased || filteredSubmissions.length === 0}
+=======
+                disabled={isReleasing || allReleased || allSubmissions.length === 0}
+>>>>>>> 8002401 (WIP: local changes)
                 className="bg-[#f9c74f] hover:bg-[#f8b92e] text-gray-900 px-10 py-3 rounded-full font-semibold text-base shadow-md hover:shadow-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-2"
               >
                 {isReleasing ? (
@@ -422,7 +584,11 @@ const Instructor = () => {
 
         {/* Summary Statistics */}
         {allSubmissions.length > 0 && (
+<<<<<<< HEAD
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+=======
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+>>>>>>> 8002401 (WIP: local changes)
             <div className="bg-white rounded-xl shadow-md p-6">
               <div className="text-sm text-gray-600 mb-1">Total Submissions</div>
               <div className="text-2xl font-bold text-gray-900">{allSubmissions.length}</div>
@@ -437,10 +603,13 @@ const Instructor = () => {
               <div className="text-sm text-gray-600 mb-1">Pending</div>
               <div className="text-2xl font-bold text-orange-600">{totalUnreleased}</div>
             </div>
+<<<<<<< HEAD
             <div className="bg-white rounded-xl shadow-md p-6">
               <div className="text-sm text-gray-600 mb-1">Available Quizzes</div>
               <div className="text-2xl font-bold text-blue-600">{availableQuizzes.length}</div>
             </div>
+=======
+>>>>>>> 8002401 (WIP: local changes)
           </div>
         )}
       </div>
